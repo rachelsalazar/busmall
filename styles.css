@@ -2,6 +2,12 @@ body {
     background-color: dimgrey;
 }
 
+header h1 {
+    text-align: center;
+    color: white; 
+    font-family: 'Exo', sans-serif; 
+}
+
 .outer {
     text-align: center;
 }
