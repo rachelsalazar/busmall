@@ -1,10 +1,11 @@
-//Structure 3 images with a container like a div attach the event listener to the container div. 
-//This will allow for one event listener and one event handler
-//Thus any click inside the table will tell you what element has been clicked. 
-//Handle the event of clicking the container div to either give a message or do nothing.
+'use strict';
 
-var imgArr = [];
+var numImgs = 3;
 var totalClicks = 0;
+var imgArr = [];
+var imgCache = imgArr.slice(0);
+var imgContainer = document.getElementById('container');
+imgContainer.addEventListener('click', handleImageClick);
 
 function imageConstructor(id, src, shown, clicked) {
     this.name = name;
@@ -15,53 +16,52 @@ function imageConstructor(id, src, shown, clicked) {
     imgArr.push(this);
 }
 
-Array.prototype.randomDiffElement = function(last) {
-    if (this.length == 0) {
-        return;
-    } else if (this.length == 1) {
-        return this[0];
-    } else {
-        var num = 0;
-        do {
-            num = Math.floor(Math.random() * this.length);
-        } while (this[num] == last);
-        return this[num];
-    }
-}
-
 function randomImgs(numImgs) {
     var images = [];
     for (var i = 0; i < numImgs; i++) {
-        images.push(imgArr[Math.floor(Math.random() * imgArr.length)]);
+        if (imgCache.length < 13) {
+            imgCache = imgArr.slice(0);
+        }
+        var index = Math.floor(Math.random() * imgCache.length);
+        var random = imgCache[index];
+        console.log('random', random.id);
+        imgCache.splice(index, 1);
+        console.log('copy arr', imgCache.length);
+        images.push(random);
     }
     return images;
 }
 
-function displayImages(images) {
+function render(images) {
     var imageContainer = document.getElementById('container');
     for (var i = 0; i < images.length; i++) {
+
         var li = document.createElement('li');
         li.innerHTML = '<img src="' + images[i].src + '" ' + 'id="' + images[i].id + '">';
         imageContainer.appendChild(li);
     }
 }
 
-var imgContainer = document.getElementById('container');
-imgContainer.addEventListener('click', handleImageClick);
 
-//TODO: make logic for preventing image displaying twice occur in event handler
+
 function handleImageClick(event) {
     event.preventDefault;
     var imgClicked = event.target.id;
-    for (var i = 0; i < imgArr.length; i++) {
-        if (imgClicked === imgArr[i].id) {
-            imgArr[i].clicked++;
+    if (imgClicked === 'container') {
+        alert('That isnt an image. Please try again.');
+    } else if (imgClicked && totalClicks < 25) {
+        for (var i = 0; i < imgArr.length; i++) {
+            if (imgClicked === imgArr[i].id) {
+                imgArr[i].clicked++;
+            }
         }
-        console.log('img clicks', imgArr[i].clicked);
+        totalClicks++;
+        imgContainer.innerHTML = '';
+        render(randomImgs(numImgs));
+    } else {
+        //TODO: replace images with chart.js code
+        alert('your results');
     }
-    totalClicks++;
-    imgContainer.innerHTML = '';
-    displayImages(randomImgs(3));
 }
 
 function loadImages() {
@@ -86,6 +86,6 @@ function loadImages() {
     new imageConstructor('water-can', 'images/water-can.jpg', 0, 0);
     new imageConstructor('wine-glass', 'images/wine-glass.jpg', 0, 0);
 }
-//function invocation
+
 loadImages();
-displayImages(randomImgs(3));
+render(randomImgs(numImgs));
