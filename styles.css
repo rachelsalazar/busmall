@@ -1,0 +1,19 @@
+body {
+    background-color: dimgrey;
+}
+
+.outer {
+    text-align: center;
+}
+
+.container img {
+    padding: 10px;
+    width: 280px;
+    height: 250px;
+    border-radius: 120px;
+}
+
+.container li {
+    display: inline-block;
+    list-style: none;
+}
