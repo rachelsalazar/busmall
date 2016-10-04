@@ -42,8 +42,6 @@ function render(images) {
     }
 }
 
-
-
 function handleImageClick(event) {
     event.preventDefault;
     var imgClicked = event.target.id;
