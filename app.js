@@ -87,3 +87,11 @@ function loadImages() {
 
 loadImages();
 render(randomImgs(numImgs));
+
+/* Technical layout
+1. Build image constructor and load each object of image into array
+2. Create a function that randomly selects an image from the image array
+3. Build into random function ability to not ever select duplicates
+4. Dispaly random images to the user
+5. Make images clickable and fire off tracking, random image selection and image rendering 
+*/
