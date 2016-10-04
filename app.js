@@ -18,22 +18,23 @@ function ImageConstructor(id, src, shown, clicked) {
 
 function randomImgs(numImgs) {
     var images = [];
+    var random;
     for (var i = 0; i < numImgs; i++) {
         if (imgCache.length <= 12) {
             imgCache = imgArr.slice(0);
         }
         if (imgCache.length > 12) {
             var index = Math.floor(Math.random() * imgCache.length);
-            var random = imgCache[index];
+            random = imgCache[index];
+            images.push(imgCache[index]);
             imgCache.splice(index, 1);
-            images.push(random);
-            (function() {
-                for (var i = 0; i < imgArr.length; i++) {
-                    if (random.id === imgArr[i]) {
-                        imgArr[i].shown++;
-                    }
-                }
-            })
+        };
+        for (var j = 0; j < imgArr.length - 1; j++) {
+            if (random.id === imgArr[j].id) {
+                imgArr[j].shown++;
+                console.log('shown', imgArr[j].shown);
+                break;
+            }
         };
     };
     return images;
@@ -62,7 +63,7 @@ function handleImageClick(event) {
     var imgClicked = event.target.id;
     if (imgClicked === 'container') {
         alert('That isnt an image. Please try again.');
-    } else if (imgClicked && totalClicks < 25) {
+    } else if (imgClicked && totalClicks < 24) {
         for (var i = 0; i < imgArr.length; i++) {
             if (imgClicked === imgArr[i].id) {
                 imgArr[i].clicked++;
@@ -71,8 +72,8 @@ function handleImageClick(event) {
         totalClicks++;
         imgContainer.innerHTML = '';
         render(randomImgs(3));
-    } else if (resDisplay) {
-        results();
+    } else if (resDisplay === true) {
+        createChart();
         resDisplay = false;
     }
 }
@@ -103,33 +104,94 @@ function loadImages() {
 loadImages();
 render(randomImgs(3));
 
-var chartData = [];
+var id = [];
+var clicks = [];
+var shown = [];
+
 function populateChartArr() {
-  for (var i = 0; i < imgArr.length; i++) {
-    imgArr[i].clicked = chartData[i].clicked;
-    imgArr[i].shown = chardData[i].shown;
-  }
+    for (var i = 0; i < imgArr.length; i++) {
+        id.push(imgArr[i].id);
+        clicks.push(imgArr[i].clicks);
+        shown.push(imgArr[i].shown);
+    }
+    //id.push(id.reduce(function(a,b){return a + b}, 0));
+    //clicks.push(clicks.reduce(function(a,b){return a + b}, 0));
+    //shown.push(shown.reduce(function(a,b){return a + b}, 0));
 }
 
-var chartObj = {
+var dataObj = {
     type: 'bar',
-    datasets: [{
-            //labels: imgArr,
-            //fillColor: '',
-            data: clickedArr,
-        },
-        {
-            //labels: imgArr,
-            //fillColor: '',
-            data: shownArr,
-        }
-    ]
+    data: {
+        labels: id,
+        datasets: [{
+                label: '# Images clicked',
+                data: clicks,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1,
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }]
+                    }
+                }
+            },
+            {
+                label: '# Images Displayed',
+                data: shown,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1,
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }]
+                    }
+                }
+            }
+        ]
+    }
 }
 
-var context = document.getElementById('results_chart').getContext('2d');
-//var chart = new Chart(context, chartObj);
-
-
+function createChart() {
+    populateChartArr();
+    var context = document.getElementById('results_chart').getContext('2d');
+    var chart = new Chart(context, dataObj);
+}
 
 /* Technical layout
 1. Build image constructor and load each object of image into array

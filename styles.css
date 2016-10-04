@@ -1,5 +1,5 @@
 body {
-    background-color: dimgrey;
+    background-color: white;
 }
 
 header {
@@ -33,7 +33,7 @@ header h2 {
 #results {
     display: block;
     text-align: center;
-    margin: auto; 
+    margin: auto;
 }
 
 #results li {
@@ -42,4 +42,14 @@ header h2 {
     text-align: left;
     color: white;
     font-family: 'Exo', sans-serif;
+}
+
+.canvas {
+    text-align: center;
+}
+
+canvas {
+    display: inline-block;
+    max-height: 700px;
+    max-width: 800px
 }
