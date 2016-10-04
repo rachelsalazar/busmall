@@ -29,3 +29,17 @@ header h2 {
     display: inline-block;
     list-style: none;
 }
+
+#results {
+    display: block;
+    text-align: center;
+    margin: auto; 
+}
+
+#results li {
+    list-style: none;
+    display: block;
+    text-align: left;
+    color: white;
+    font-family: 'Exo', sans-serif;
+}
