@@ -73,6 +73,7 @@ function handleImageClick(event) {
         imgContainer.innerHTML = '';
         render(randomImgs(3));
     } else if (resDisplay === true) {
+        results(); 
         createChart();
         resDisplay = false;
     }
