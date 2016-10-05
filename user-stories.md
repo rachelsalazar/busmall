@@ -1,9 +1,4 @@
 
-# As a rider of the transportation system that will view and use the bus-mall application 
-
-# As a marketer for bus-mall I want to be able to track the Software Developer
-
-
 # Developer
 As developer, I want to use DRY and clear naming to make code simple to read and understand.
 As developer, I want to meet all the Acceptance Criteria set forth by Marketing.
