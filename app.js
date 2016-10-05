@@ -2,8 +2,13 @@
 
 var resDisplay = true;
 var totalClicks = 0;
+var reverse = 0;
 var imgArr = [];
 var imgCache = imgArr.slice(0);
+var id = [];
+var clicks = [];
+var shown = [];
+
 var imgContainer = document.getElementById('container');
 imgContainer.addEventListener('click', handleImageClick);
 
@@ -20,8 +25,14 @@ function randomImgs(numImgs) {
     var images = [];
     var random;
     for (var i = 0; i < numImgs; i++) {
+
         if (imgCache.length <= 12) {
-            imgCache = imgArr.slice(0);
+            if (reverse === 2) {
+                imgCache = imgArr.slice(0).reverse();
+            } else {
+                imgCache = imgArr.slice(0);
+                reverse++;
+            }
         }
         if (imgCache.length > 12) {
             var index = Math.floor(Math.random() * imgCache.length);
@@ -73,7 +84,7 @@ function handleImageClick(event) {
         imgContainer.innerHTML = '';
         render(randomImgs(3));
     } else if (resDisplay === true) {
-        results(); 
+        //results();
         createChart();
         resDisplay = false;
     }
@@ -102,13 +113,6 @@ function loadImages() {
     new ImageConstructor('wine-glass', 'images/wine-glass.jpg', 0, 0);
 }
 
-loadImages();
-render(randomImgs(3));
-
-var id = [];
-var clicks = [];
-var shown = [];
-
 function populateChartArr() {
     for (var i = 0; i < imgArr.length; i++) {
         id.push(imgArr[i].id);
@@ -118,9 +122,6 @@ function populateChartArr() {
         console.log('clicks', clicks);
         console.log('shown', shown);
     }
-    //id.push(id.reduce(function(a,b){return a + b}, 0));
-    //clicks.push(clicks.reduce(function(a,b){return a + b}, 0));
-    //shown.push(shown.reduce(function(a,b){return a + b}, 0));
 }
 
 var dataObj = {
@@ -263,3 +264,61 @@ function createChart() {
 5. Make images clickable and fire off tracking, random image selection and image rendering 
 6. Incorporate chart.js
 */
+
+//building persistance localStore and sessionStorage
+
+function storageSupport() {
+    try {
+        return 'localStorage' in window && window['localStorage'] !== null;
+    } catch (e) {
+        return false;
+    }
+}
+
+if (storageSupport()) {
+    console.log('local storage true');
+    //Retrieve from LS
+    var idFLS = localStorage.getItem(id);
+    var clicksFLS = localStorage.getItem(clicks);
+    var shownFLS = localStorage.getItem(shown);
+    var imgsFLS = localStorage.getItem('imgs');
+    //convert to JSON
+    var idJSON = JSON.parse(idFLS);
+    var clicksJSON = JSON.parse(clicksFLS);
+    var shownJSON = JSON.parse(shownFLS);
+    var imgsJSON = JSON.parse(imgsFLS);
+    console.log(idJSON);
+    //fill arrays
+} else {
+    console.log('no local storage');
+    // no native support for HTML5 storage :(
+    // maybe try dojox.storage or a third-party solution
+
+    loadImages();
+    render(randomImgs(3));
+    //Converting String, Storing, Retrieving, Converting JSON
+    var imgsLS = JSON.stringify(imgArr);
+    localStorage.setItem('imgs', imgsLS);
+    var imgsFLS = localStorage.getItem('imgs');
+    var imgsJSON = JSON.parse(imgsFLS);
+}
+
+//Converting to string 
+var idLS = JSON.stringify(id);
+var clicksLS = JSON.stringify(clicks);
+var shownLS = JSON.stringify(shown);
+
+//Store in LS
+localStorage.setItem('id', idLS);
+localStorage.setItem('clicks', clicksLS);
+localStorage.setItem('shown', shownLS);
+
+//Retrieve from LS
+var idFLS = localStorage.getItem(id);
+var clicksFLS = localStorage.getItem(clicks);
+var shownFLS = localStorage.getItem(shown);
+
+//convert to JSON
+var idJSON = JSON.parse(idFLS);
+var clicksJSON = JSON.parse(clicksFLS);
+var shownJSON = JSON.parse(shownFLS);
