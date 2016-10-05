@@ -85,6 +85,7 @@ function handleImageClick(event) {
         render(randomImgs(3));
     } else if (resDisplay === true) {
         //results();
+        save();
         createChart();
         resDisplay = false;
     }
@@ -261,64 +262,28 @@ function createChart() {
 2. Create a function that randomly selects an image from the image array
 3. Build into random function ability to not ever select duplicates
 4. Display random images to the user
-5. Make images clickable and fire off tracking, random image selection and image rendering 
+5. Make images clickable and fire off tracking, random image selection and image rendering
 6. Incorporate chart.js
 */
 
 //building persistance localStore and sessionStorage
 
-function storageSupport() {
-    try {
-        return 'localStorage' in window && window['localStorage'] !== null;
-    } catch (e) {
-        return false;
-    }
-}
-
-if (storageSupport()) {
-    console.log('local storage true');
-    //Retrieve from LS
-    var idFLS = localStorage.getItem(id);
-    var clicksFLS = localStorage.getItem(clicks);
-    var shownFLS = localStorage.getItem(shown);
-    var imgsFLS = localStorage.getItem('imgs');
-    //convert to JSON
-    var idJSON = JSON.parse(idFLS);
-    var clicksJSON = JSON.parse(clicksFLS);
-    var shownJSON = JSON.parse(shownFLS);
-    var imgsJSON = JSON.parse(imgsFLS);
-    console.log(idJSON);
-    //fill arrays
+if (localStorage.getItem('imgs')) {
+  loadImages();
+  render(randomImgs(3));
+  //Retrieve from LS
+  var imgsFLS = localStorage.getItem('imgs');
+  //convert to JSON
+  var imgsJSON = JSON.parse(imgsFLS);
+  imgArr = imgsJSON;
 } else {
-    console.log('no local storage');
-    // no native support for HTML5 storage :(
-    // maybe try dojox.storage or a third-party solution
-
-    loadImages();
-    render(randomImgs(3));
-    //Converting String, Storing, Retrieving, Converting JSON
-    var imgsLS = JSON.stringify(imgArr);
-    localStorage.setItem('imgs', imgsLS);
-    var imgsFLS = localStorage.getItem('imgs');
-    var imgsJSON = JSON.parse(imgsFLS);
+  loadImages();
+  render(randomImgs(3));
+  var imgsLS = JSON.stringify(imgArr);
+  localStorage.setItem('imgs', imgsLS);
 }
 
-//Converting to string 
-var idLS = JSON.stringify(id);
-var clicksLS = JSON.stringify(clicks);
-var shownLS = JSON.stringify(shown);
-
-//Store in LS
-localStorage.setItem('id', idLS);
-localStorage.setItem('clicks', clicksLS);
-localStorage.setItem('shown', shownLS);
-
-//Retrieve from LS
-var idFLS = localStorage.getItem(id);
-var clicksFLS = localStorage.getItem(clicks);
-var shownFLS = localStorage.getItem(shown);
-
-//convert to JSON
-var idJSON = JSON.parse(idFLS);
-var clicksJSON = JSON.parse(clicksFLS);
-var shownJSON = JSON.parse(shownFLS);
+function save(){
+  var imgsLS = JSON.stringify(imgArr);
+  localStorage.setItem('imgs', imgsLS);
+}
