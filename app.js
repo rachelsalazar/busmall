@@ -111,8 +111,11 @@ var shown = [];
 function populateChartArr() {
     for (var i = 0; i < imgArr.length; i++) {
         id.push(imgArr[i].id);
-        clicks.push(imgArr[i].clicks);
+        clicks.push(imgArr[i].clicked);
         shown.push(imgArr[i].shown);
+        console.log('id', id);
+        console.log('clicks', clicks);
+        console.log('shown', shown);
     }
     //id.push(id.reduce(function(a,b){return a + b}, 0));
     //clicks.push(clicks.reduce(function(a,b){return a + b}, 0));
@@ -124,7 +127,7 @@ var dataObj = {
     data: {
         labels: id,
         datasets: [{
-                label: '# Images clicked',
+                label: 'Votes for each product',
                 data: clicks,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -133,6 +136,20 @@ var dataObj = {
                     'rgba(75, 192, 192, 0.2)',
                     'rgba(153, 102, 255, 0.2)',
                     'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
                 ],
                 borderColor: [
                     'rgba(255,99,132,1)',
@@ -140,9 +157,23 @@ var dataObj = {
                     'rgba(255, 206, 86, 1)',
                     'rgba(75, 192, 192, 1)',
                     'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
                 ],
-                borderWidth: 1,
+                borderWidth: 3,
                 options: {
                     scales: {
                         yAxes: [{
@@ -153,8 +184,9 @@ var dataObj = {
                     }
                 }
             },
+
             {
-                label: '# Images Displayed',
+                label: 'Number of times product displayed',
                 data: shown,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
@@ -162,7 +194,21 @@ var dataObj = {
                     'rgba(255, 206, 86, 0.2)',
                     'rgba(75, 192, 192, 0.2)',
                     'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)'
                 ],
                 borderColor: [
                     'rgba(255,99,132,1)',
@@ -170,9 +216,23 @@ var dataObj = {
                     'rgba(255, 206, 86, 1)',
                     'rgba(75, 192, 192, 1)',
                     'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
                 ],
-                borderWidth: 1,
+                borderWidth: 3,
                 options: {
                     scales: {
                         yAxes: [{
@@ -189,6 +249,7 @@ var dataObj = {
 
 function createChart() {
     populateChartArr();
+    Chart.defaults.global.defaultFontColor = '#FFF';
     var context = document.getElementById('results_chart').getContext('2d');
     var chart = new Chart(context, dataObj);
 }
